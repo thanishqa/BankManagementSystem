@@ -5,59 +5,112 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+
         Bank bank = new Bank();
 
         boolean running = true;
 
         while (running) {
 
-            System.out.println("\n=================================");
-            System.out.println("       WELCOME TO MY BANK");
-            System.out.println("=================================");
-            System.out.println("1. Create Account");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
-            System.out.println("=================================");
+            System.out.println(
+                    "\n=================================");
 
-            System.out.print("Enter your choice: ");
+            System.out.println(
+                    "       WELCOME TO MY BANK");
+
+            System.out.println(
+                    "=================================");
+
+            System.out.println(
+                    "1. Create Account");
+
+            System.out.println(
+                    "2. Login");
+
+            System.out.println(
+                    "3. Display All Accounts");
+
+            System.out.println(
+                    "4. Exit");
+
+            System.out.println(
+                    "=================================");
+
+            System.out.print(
+                    "Enter your choice: ");
+
             int choice = scanner.nextInt();
 
             switch (choice) {
 
                 case 1:
 
-                    System.out.print("Enter Account Number: ");
+                    System.out.print(
+                            "Enter Account Number: ");
+
                     int accountNumber = scanner.nextInt();
 
                     scanner.nextLine();
 
-                    System.out.print("Enter Account Holder Name: ");
+                    System.out.print(
+                            "Enter Account Holder Name: ");
+
                     String name = scanner.nextLine();
 
-                    System.out.print("Create a 4-digit PIN: ");
+                    System.out.println(
+                            "\nSelect Account Type:");
+
+                    System.out.println(
+                            "1. Savings Account");
+
+                    System.out.println(
+                            "2. Current Account");
+
+                    System.out.print(
+                            "Enter choice: ");
+
+                    int accountType = scanner.nextInt();
+
+                    if (accountType != 1 &&
+                            accountType != 2) {
+
+                        System.out.println(
+                                "Invalid account type.");
+
+                        break;
+                    }
+
+                    System.out.print(
+                            "Create a 4-digit PIN: ");
+
                     int pin = scanner.nextInt();
 
                     bank.createAccount(
                             accountNumber,
                             name,
-                            pin
-                    );
+                            pin,
+                            accountType);
 
                     break;
 
                 case 2:
 
-                    System.out.print("Enter Account Number: ");
-                    int loginAccountNumber = scanner.nextInt();
+                    System.out.print(
+                            "Enter Account Number: ");
 
-                    System.out.print("Enter PIN: ");
-                    int loginPin = scanner.nextInt();
+                    int loginAccountNumber =
+                            scanner.nextInt();
+
+                    System.out.print(
+                            "Enter PIN: ");
+
+                    int loginPin =
+                            scanner.nextInt();
 
                     BankAccount loggedInAccount =
                             bank.login(
                                     loginAccountNumber,
-                                    loginPin
-                            );
+                                    loginPin);
 
                     if (loggedInAccount != null) {
 
@@ -66,62 +119,82 @@ public class Main {
                         while (loggedIn) {
 
                             System.out.println(
-                                    "\n================================="
-                            );
+                                    "\n=================================");
 
                             System.out.println(
-                                    "          BANK MENU"
-                            );
+                                    "          BANK MENU");
 
                             System.out.println(
-                                    "================================="
-                            );
-
-                            System.out.println("1. Deposit Money");
-                            System.out.println("2. Withdraw Money");
-                            System.out.println("3. Check Balance");
-                            System.out.println("4. Transfer Money");
-                            System.out.println("5. Transaction History");
-                            System.out.println("6. Account Details");
-                            System.out.println("7. Change PIN");
-                            System.out.println("8. Logout");
+                                    "=================================");
 
                             System.out.println(
-                                    "================================="
-                            );
+                                    "1. Deposit Money");
 
-                            System.out.print("Enter your choice: ");
-                            int bankChoice = scanner.nextInt();
+                            System.out.println(
+                                    "2. Withdraw Money");
+
+                            System.out.println(
+                                    "3. Check Balance");
+
+                            System.out.println(
+                                    "4. Transfer Money");
+
+                            System.out.println(
+                                    "5. Transaction History");
+
+                            System.out.println(
+                                    "6. Account Details");
+
+                            System.out.println(
+                                    "7. Change PIN");
+
+                            System.out.println(
+                                    "8. Logout");
+
+                            System.out.println(
+                                    "=================================");
+
+                            System.out.print(
+                                    "Enter your choice: ");
+
+                            int bankChoice =
+                                    scanner.nextInt();
 
                             switch (bankChoice) {
 
                                 case 1:
 
                                     System.out.print(
-                                            "Enter Deposit Amount: "
-                                    );
+                                            "Enter Deposit Amount: ");
 
                                     double depositAmount =
                                             scanner.nextDouble();
 
                                     loggedInAccount.deposit(
-                                            depositAmount
-                                    );
+                                            depositAmount);
 
                                     break;
 
                                 case 2:
 
                                     System.out.print(
-                                            "Enter Withdrawal Amount: "
-                                    );
+                                            "Enter Withdrawal Amount: ");
 
                                     double withdrawalAmount =
                                             scanner.nextDouble();
 
-                                    loggedInAccount.withdraw(
-                                            withdrawalAmount
-                                    );
+                                    try {
+
+                                        loggedInAccount.withdraw(
+                                                withdrawalAmount);
+
+                                    } catch (
+                                            InsufficientBalanceException e) {
+
+                                        System.out.println(
+                                                "Transaction failed: " +
+                                                e.getMessage());
+                                    }
 
                                     break;
 
@@ -129,36 +202,41 @@ public class Main {
 
                                     System.out.println(
                                             "Current Balance: ₹" +
-                                            loggedInAccount.getBalance()
-                                    );
+                                            loggedInAccount.getBalance());
 
                                     break;
 
                                 case 4:
 
                                     System.out.print(
-                                            "Enter Receiver Account Number: "
-                                    );
+                                            "Enter Receiver Account Number: ");
 
                                     int receiverNumber =
                                             scanner.nextInt();
 
                                     BankAccount receiver =
                                             bank.findAccount(
-                                                    receiverNumber
-                                            );
+                                                    receiverNumber);
 
                                     System.out.print(
-                                            "Enter Transfer Amount: "
-                                    );
+                                            "Enter Transfer Amount: ");
 
                                     double transferAmount =
                                             scanner.nextDouble();
 
-                                    loggedInAccount.transfer(
-                                            receiver,
-                                            transferAmount
-                                    );
+                                    try {
+
+                                        loggedInAccount.transfer(
+                                                receiver,
+                                                transferAmount);
+
+                                    } catch (
+                                            InsufficientBalanceException e) {
+
+                                        System.out.println(
+                                                "Transfer failed: " +
+                                                e.getMessage());
+                                    }
 
                                     break;
 
@@ -179,23 +257,20 @@ public class Main {
                                 case 7:
 
                                     System.out.print(
-                                            "Enter Current PIN: "
-                                    );
+                                            "Enter Current PIN: ");
 
                                     int oldPin =
                                             scanner.nextInt();
 
                                     System.out.print(
-                                            "Enter New 4-digit PIN: "
-                                    );
+                                            "Enter New 4-digit PIN: ");
 
                                     int newPin =
                                             scanner.nextInt();
 
                                     loggedInAccount.changePin(
                                             oldPin,
-                                            newPin
-                                    );
+                                            newPin);
 
                                     break;
 
@@ -204,16 +279,14 @@ public class Main {
                                     loggedIn = false;
 
                                     System.out.println(
-                                            "Logged out successfully."
-                                    );
+                                            "Logged out successfully.");
 
                                     break;
 
                                 default:
 
                                     System.out.println(
-                                            "Invalid choice."
-                                    );
+                                            "Invalid choice.");
                             }
                         }
                     }
@@ -222,19 +295,23 @@ public class Main {
 
                 case 3:
 
+                    bank.displayAllAccounts();
+
+                    break;
+
+                case 4:
+
                     running = false;
 
                     System.out.println(
-                            "\nThank you for using My Bank!"
-                    );
+                            "\nThank you for using My Bank!");
 
                     break;
 
                 default:
 
                     System.out.println(
-                            "Invalid choice. Please try again."
-                    );
+                            "Invalid choice. Please try again.");
             }
         }
 
