@@ -48,14 +48,16 @@ public class Main {
                     System.out.print(
                             "Enter Account Number: ");
 
-                    int accountNumber = scanner.nextInt();
+                    int accountNumber =
+                            scanner.nextInt();
 
                     scanner.nextLine();
 
                     System.out.print(
                             "Enter Account Holder Name: ");
 
-                    String name = scanner.nextLine();
+                    String name =
+                            scanner.nextLine();
 
                     System.out.println(
                             "\nSelect Account Type:");
@@ -69,21 +71,14 @@ public class Main {
                     System.out.print(
                             "Enter choice: ");
 
-                    int accountType = scanner.nextInt();
-
-                    if (accountType != 1 &&
-                            accountType != 2) {
-
-                        System.out.println(
-                                "Invalid account type.");
-
-                        break;
-                    }
+                    int accountType =
+                            scanner.nextInt();
 
                     System.out.print(
                             "Create a 4-digit PIN: ");
 
-                    int pin = scanner.nextInt();
+                    int pin =
+                            scanner.nextInt();
 
                     bank.createAccount(
                             accountNumber,
@@ -173,6 +168,8 @@ public class Main {
                                     loggedInAccount.deposit(
                                             depositAmount);
 
+                                    bank.saveData();
+
                                     break;
 
                                 case 2:
@@ -187,6 +184,8 @@ public class Main {
 
                                         loggedInAccount.withdraw(
                                                 withdrawalAmount);
+
+                                        bank.saveData();
 
                                     } catch (
                                             InsufficientBalanceException e) {
@@ -230,6 +229,8 @@ public class Main {
                                                 receiver,
                                                 transferAmount);
 
+                                        bank.saveData();
+
                                     } catch (
                                             InsufficientBalanceException e) {
 
@@ -272,6 +273,8 @@ public class Main {
                                             oldPin,
                                             newPin);
 
+                                    bank.saveData();
+
                                     break;
 
                                 case 8:
@@ -300,6 +303,8 @@ public class Main {
                     break;
 
                 case 4:
+
+                    bank.saveData();
 
                     running = false;
 

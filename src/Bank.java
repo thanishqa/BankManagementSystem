@@ -12,6 +12,29 @@ public class Bank {
         accountList = new ArrayList<>();
 
         accountMap = new HashMap<>();
+
+        loadBankData();
+    }
+
+    private void loadBankData() {
+
+        accountList =
+                BankDataManager.loadAccounts();
+
+        for (BankAccount account :
+                accountList) {
+
+            accountMap.put(
+                    account.getAccountNumber(),
+                    account);
+        }
+
+        if (!accountList.isEmpty()) {
+
+            System.out.println(
+                    accountList.size() +
+                    " account(s) loaded.");
+        }
     }
 
     public boolean createAccount(
@@ -20,7 +43,8 @@ public class Bank {
             int pin,
             int accountType) {
 
-        if (accountMap.containsKey(accountNumber)) {
+        if (accountMap.containsKey(
+                accountNumber)) {
 
             System.out.println(
                     "Account number already exists.");
@@ -45,12 +69,19 @@ public class Bank {
                     accountHolderName,
                     pin);
 
-        } else {
+        } else if (accountType == 2) {
 
             account = new CurrentAccount(
                     accountNumber,
                     accountHolderName,
                     pin);
+
+        } else {
+
+            System.out.println(
+                    "Invalid account type.");
+
+            return false;
         }
 
         accountList.add(account);
@@ -58,6 +89,9 @@ public class Bank {
         accountMap.put(
                 accountNumber,
                 account);
+
+        BankDataManager.saveAccounts(
+                accountList);
 
         System.out.println(
                 "\nAccount created successfully!");
@@ -76,7 +110,8 @@ public class Bank {
     public BankAccount findAccount(
             int accountNumber) {
 
-        return accountMap.get(accountNumber);
+        return accountMap.get(
+                accountNumber);
     }
 
     public BankAccount login(
@@ -84,7 +119,8 @@ public class Bank {
             int pin) {
 
         BankAccount account =
-                accountMap.get(accountNumber);
+                accountMap.get(
+                        accountNumber);
 
         if (account == null) {
 
@@ -111,6 +147,17 @@ public class Bank {
                 "!");
 
         return account;
+    }
+
+    public void saveData() {
+
+        BankDataManager.saveAccounts(
+                accountList);
+    }
+
+    public ArrayList<BankAccount> getAccountList() {
+
+        return accountList;
     }
 
     public void displayAllAccounts() {

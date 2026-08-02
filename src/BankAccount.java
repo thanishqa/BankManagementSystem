@@ -7,6 +7,7 @@ public abstract class BankAccount {
     private int accountNumber;
     private String accountHolderName;
     private int pin;
+
     protected double balance;
 
     private ArrayList<String> transactionHistory;
@@ -34,8 +35,23 @@ public abstract class BankAccount {
         return accountHolderName;
     }
 
+    public int getPin() {
+        return pin;
+    }
+
     public double getBalance() {
         return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public ArrayList<String> getTransactionHistory() {
+        return transactionHistory;
+    }
+    public void addLoadedTransaction(String transaction) {
+        transactionHistory.add(transaction);
     }
 
     public boolean verifyPin(int enteredPin) {
@@ -44,13 +60,15 @@ public abstract class BankAccount {
 
     protected void addTransaction(String message) {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now =
+                LocalDateTime.now();
 
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern(
                         "dd-MM-yyyy HH:mm:ss");
 
-        String dateTime = now.format(formatter);
+        String dateTime =
+                now.format(formatter);
 
         transactionHistory.add(
                 "[" + dateTime + "] " + message);
@@ -93,7 +111,8 @@ public abstract class BankAccount {
 
             throw new InsufficientBalanceException(
                     "Insufficient balance. " +
-                    "Available balance: ₹" + balance);
+                    "Available balance: ₹" +
+                    balance);
         }
 
         balance -= amount;
@@ -142,10 +161,12 @@ public abstract class BankAccount {
 
             throw new InsufficientBalanceException(
                     "Insufficient balance. " +
-                    "Available balance: ₹" + balance);
+                    "Available balance: ₹" +
+                    balance);
         }
 
         balance -= amount;
+
         receiver.balance += amount;
 
         addTransaction(
@@ -177,7 +198,8 @@ public abstract class BankAccount {
             return;
         }
 
-        if (newPin < 1000 || newPin > 9999) {
+        if (newPin < 1000 ||
+                newPin > 9999) {
 
             System.out.println(
                     "PIN must contain exactly 4 digits.");
