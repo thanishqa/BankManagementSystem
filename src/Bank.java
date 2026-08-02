@@ -1,45 +1,108 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bank {
 
-    private ArrayList<BankAccount> accounts;
+    private ArrayList<BankAccount> accountList;
+    private HashMap<Integer, BankAccount> accountMap;
 
     public Bank() {
-        accounts = new ArrayList<>();
+
+        accountList = new ArrayList<>();
+        accountMap = new HashMap<>();
     }
 
-    public void createAccount(int accountNumber, String accountHolderName) {
+    public boolean createAccount(
+            int accountNumber,
+            String accountHolderName,
+            int pin) {
+
+        if (accountMap.containsKey(accountNumber)) {
+
+            System.out.println("Account number already exists.");
+            return false;
+        }
+
+        if (pin < 1000 || pin > 9999) {
+
+            System.out.println("PIN must contain exactly 4 digits.");
+            return false;
+        }
 
         BankAccount account =
-                new BankAccount(accountNumber, accountHolderName);
+                new BankAccount(
+                        accountNumber,
+                        accountHolderName,
+                        pin
+                );
 
-        accounts.add(account);
+        accountList.add(account);
+        accountMap.put(accountNumber, account);
 
         System.out.println("\nAccount created successfully!");
         System.out.println("Account Number: " + accountNumber);
+
+        return true;
     }
 
     public BankAccount findAccount(int accountNumber) {
 
-        for (BankAccount account : accounts) {
+        return accountMap.get(accountNumber);
+    }
 
-            if (account.getAccountNumber() == accountNumber) {
-                return account;
-            }
+    public BankAccount login(int accountNumber, int pin) {
+
+        BankAccount account = accountMap.get(accountNumber);
+
+        if (account == null) {
+
+            System.out.println("Account not found.");
+            return null;
         }
 
-        return null;
+        if (!account.verifyPin(pin)) {
+
+            System.out.println("Incorrect PIN.");
+            return null;
+        }
+
+        System.out.println("\nLogin successful!");
+        System.out.println(
+                "Welcome, " + account.getAccountHolderName() + "!"
+        );
+
+        return account;
     }
 
     public void displayAllAccounts() {
 
-        if (accounts.isEmpty()) {
-            System.out.println("No accounts available.");
-            return;
-        }
+        System.out.println("\n---------- All Accounts ----------");
 
-        for (BankAccount account : accounts) {
-            account.displayAccountDetails();
+        if (accountList.isEmpty()) {
+
+            System.out.println("No accounts available.");
+
+        } else {
+
+            for (BankAccount account : accountList) {
+
+                System.out.println(
+                        "Account Number : " +
+                        account.getAccountNumber()
+                );
+
+                System.out.println(
+                        "Account Holder : " +
+                        account.getAccountHolderName()
+                );
+
+                System.out.println(
+                        "Balance        : ₹" +
+                        account.getBalance()
+                );
+
+                System.out.println("---------------------------------");
+            }
         }
     }
 }
